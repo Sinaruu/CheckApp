@@ -1,0 +1,126 @@
+package com.egorkivilev.checkapp.view;
+
+import com.egorkivilev.checkapp.Model.PriorityType;
+import com.egorkivilev.checkapp.controller.TaskController;
+import com.formdev.flatlaf.FlatLightLaf;
+
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
+public class AddTaskDialog {
+    private JFrame frame;
+    private JPanel panel;
+    private JLabel taskName;
+    private JTextField taskNameTextField;
+    private JLabel taskDescription;
+    private JTextArea taskDescriptionField;
+    private JScrollPane descriptionScrollPane;
+    private JLabel taskPriorityLabel;
+    private JComboBox<String> taskPriorityComboBox;
+    private JButton button;
+    private JLabel statusLabel;
+    private GroupLayout layout;
+
+    private TaskController taskController;
+
+    public AddTaskDialog(TaskController taskController) {
+        this.taskController = taskController;
+        init();
+    }
+
+    private void init() {
+        FlatLightLaf.setup();
+
+        frame = new JFrame("Add Task");
+        panel = new JPanel();
+
+        taskName = new JLabel("Name");
+        taskNameTextField = new JTextField(20);
+
+        taskDescription = new JLabel("Description");
+        taskDescriptionField = new JTextArea(4, 20); // 4 rows, 20 columns
+        taskDescriptionField.setLineWrap(true);
+        taskDescriptionField.setWrapStyleWord(true);
+        descriptionScrollPane = new JScrollPane(taskDescriptionField,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        taskPriorityLabel = new JLabel("Priority");
+        taskPriorityComboBox = new JComboBox(PriorityType.values());
+
+        button = new JButton("Add");
+        button.addActionListener(e -> taskController.buttonEvent(e));
+
+        statusLabel = new JLabel("Name must be not empty");
+        button.addActionListener(e -> {
+            String name = taskNameTextField.getText();
+            String description = taskDescriptionField.getText();
+            // Handle the input (e.g., create task object or pass to controller)
+        });
+
+        layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addComponent(taskName)
+                                .addComponent(taskPriorityLabel)
+                                .addComponent(taskDescription))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(taskNameTextField)
+                                .addComponent(taskPriorityComboBox)
+                                .addComponent(descriptionScrollPane)
+                                .addComponent(button)
+                                .addComponent(statusLabel))
+        );
+
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(taskName)
+                                .addComponent(taskNameTextField))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(taskPriorityLabel)
+                                .addComponent(taskPriorityComboBox))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(taskDescription)
+                                .addComponent(descriptionScrollPane))
+                        .addComponent(button)
+                        .addComponent(statusLabel)
+        );
+
+        layout.linkSize(SwingConstants.HORIZONTAL, taskNameTextField, descriptionScrollPane);
+
+        frame.add(panel);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+                taskController.onDialogClosed();
+            }
+        });
+
+        frame.setResizable(false);
+        frame.setVisible(true);
+    }
+
+    public ArrayList<String> getData() {
+        ArrayList<String> data = new ArrayList<>();
+        data.add(taskNameTextField.getText());
+        data.add(taskPriorityComboBox.getSelectedItem().toString());
+        data.add(taskDescriptionField.getText());
+
+        return data;
+    }
+
+    public void close() {
+        frame.dispose();
+    }
+}
