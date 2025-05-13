@@ -5,6 +5,9 @@ import com.egorkivilev.checkapp.controller.TaskController;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -38,6 +41,22 @@ public class AddTaskDialog {
 
         taskName = new JLabel("Name");
         taskNameTextField = new JTextField(20);
+        taskNameTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateButton();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateButton();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateButton();
+            }
+        });
 
         taskDescription = new JLabel("Description");
         taskDescriptionField = new JTextArea(4, 20); // 4 rows, 20 columns
@@ -51,6 +70,7 @@ public class AddTaskDialog {
         taskPriorityComboBox = new JComboBox(PriorityType.values());
 
         button = new JButton("Add");
+        button.setEnabled(false);
         button.addActionListener(e -> taskController.buttonEvent(e));
 
         statusLabel = new JLabel("Name must be not empty");
@@ -109,6 +129,16 @@ public class AddTaskDialog {
 
         frame.setResizable(false);
         frame.setVisible(true);
+    }
+
+    public void updateButton() {
+        if(taskNameTextField.getText().isEmpty()) {
+            button.setEnabled(false);
+            statusLabel.setText("Name must be not empty");
+        } else {
+            button.setEnabled(true);
+            statusLabel.setText("");
+        }
     }
 
     public ArrayList<String> getData() {
