@@ -16,12 +16,6 @@
 - Swing (UI)
 - FlatLaf
 
-## Structure
-
-- `Model` – Handles task data and logic (Task, TaskManager, PriorityType)
-- `View` – User interface components (TaskUI, AddTaskDialog)
-- `Controller` – Connects UI and logic (TaskController)
-
 ## Getting Started
 
 Compile and run with:
