@@ -1,4 +1,4 @@
-package com.egorkivilev.checkapp.Model;
+package com.egorkivilev.checkapp.model;
 
 public class Task {
     private String name;

@@ -1,6 +1,6 @@
 package com.egorkivilev.checkapp.view;
 
-import com.egorkivilev.checkapp.Model.PriorityType;
+import com.egorkivilev.checkapp.model.PriorityType;
 import com.egorkivilev.checkapp.controller.TaskController;
 import com.formdev.flatlaf.FlatLightLaf;
 

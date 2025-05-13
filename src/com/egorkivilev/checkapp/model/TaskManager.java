@@ -2,7 +2,7 @@
  * Will manage task objects and store neatly
  */
 
-package com.egorkivilev.checkapp.Model;
+package com.egorkivilev.checkapp.model;
 
 import com.egorkivilev.checkapp.controller.TaskController;
 
@@ -16,8 +16,6 @@ public class TaskManager {
     public TaskManager(TaskController taskController) {
         taskList = new ArrayList<>();
         this.taskController = taskController;
-
-        taskList.add(new Task("Make this program work", "Lalala", PriorityType.HIGH));
     }
 
     public void addTask(Task task) {

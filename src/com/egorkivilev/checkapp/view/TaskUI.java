@@ -1,6 +1,6 @@
 package com.egorkivilev.checkapp.view;
 
-import com.egorkivilev.checkapp.Model.Task;
+import com.egorkivilev.checkapp.model.Task;
 import com.egorkivilev.checkapp.controller.TaskController;
 import com.egorkivilev.checkapp.util.TimeFormatter;
 import com.formdev.flatlaf.FlatLightLaf;

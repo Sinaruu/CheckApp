@@ -7,9 +7,9 @@
 
 package com.egorkivilev.checkapp.controller;
 
-import com.egorkivilev.checkapp.Model.PriorityType;
-import com.egorkivilev.checkapp.Model.Task;
-import com.egorkivilev.checkapp.Model.TaskManager;
+import com.egorkivilev.checkapp.model.PriorityType;
+import com.egorkivilev.checkapp.model.Task;
+import com.egorkivilev.checkapp.model.TaskManager;
 import com.egorkivilev.checkapp.view.AddTaskDialog;
 import com.egorkivilev.checkapp.view.TaskUI;
 
