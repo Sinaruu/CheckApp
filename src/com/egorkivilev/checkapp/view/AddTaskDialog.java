@@ -135,6 +135,9 @@ public class AddTaskDialog {
         if(taskNameTextField.getText().isEmpty()) {
             button.setEnabled(false);
             statusLabel.setText("Name must be not empty");
+        } else if(taskNameTextField.getText().equals("hello")) {
+            button.setEnabled(false);
+            statusLabel.setText("This name is already in use");
         } else {
             button.setEnabled(true);
             statusLabel.setText("");
