@@ -79,4 +79,8 @@ public class TaskController {
     public void updateList() {
         taskUI.refreshTaskList();
     }
+
+    public Task findTask(String line) {
+        return taskManager.findTask(line);
+    }
 }
