@@ -52,6 +52,13 @@ public class TaskController {
             Task selectedTask = taskUI.getOpenedTask();
             taskDialog = new TaskDialog(this, selectedTask);
         }
+
+        else if(e.getActionCommand().equals("Mark Complete")) {
+            Task selectedTask = taskUI.getOpenedTask();
+            taskManager.toggleCompleted(selectedTask);
+            taskUI.openTask(selectedTask);
+        }
+
         else {
             System.out.println("Task Controller - Invalid Action");
         }

@@ -44,7 +44,7 @@ public class Task {
         return completed;
     }
 
-    public void changeCompleted() {
+    public void toggleCompleted() {
         completed = !completed;
     }
 }

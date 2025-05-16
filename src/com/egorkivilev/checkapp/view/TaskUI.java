@@ -130,8 +130,10 @@ public class TaskUI {
 
         if(task.isCompleted()) {
             taskStatus = new JLabel("Status: Completed");
+            taskStatus.setForeground(Color.GREEN);
         } else {
             taskStatus = new JLabel("Status: Not Completed");
+            taskStatus.setForeground(Color.RED);
         }
 
         headerPanel.add(taskName);

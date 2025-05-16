@@ -44,8 +44,9 @@ public class TaskManager {
         return task.isCompleted();
     }
 
-    public void changeCompleted(Task task) {
-        task.changeCompleted();
+    public void toggleCompleted(Task task) {
+        task.toggleCompleted();
+        taskController.updateList();
     }
 
     public Task findTask(String name) {
