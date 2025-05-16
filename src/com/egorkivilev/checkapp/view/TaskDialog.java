@@ -2,17 +2,17 @@ package com.egorkivilev.checkapp.view;
 
 import com.egorkivilev.checkapp.model.PriorityType;
 import com.egorkivilev.checkapp.controller.TaskController;
+import com.egorkivilev.checkapp.model.Task;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class AddTaskDialog {
+public class TaskDialog {
     private JFrame frame;
     private JPanel panel;
     private JLabel taskName;
@@ -27,9 +27,18 @@ public class AddTaskDialog {
     private GroupLayout layout;
 
     private TaskController taskController;
+    private boolean editing = false;
+    Task selectedTask;
 
-    public AddTaskDialog(TaskController taskController) {
+    public TaskDialog(TaskController taskController) {
         this.taskController = taskController;
+        init();
+    }
+
+    public TaskDialog(TaskController taskController, Task task) {
+        this.taskController = taskController;
+        editing = true;
+        selectedTask = task;
         init();
     }
 
@@ -69,16 +78,26 @@ public class AddTaskDialog {
         taskPriorityLabel = new JLabel("Priority");
         taskPriorityComboBox = new JComboBox(PriorityType.values());
 
-        button = new JButton("Add");
-        button.setEnabled(false);
-        button.addActionListener(e -> taskController.buttonEvent(e));
+        if(editing) {
+            button = new JButton("Edit");
+            button.addActionListener(e -> taskController.buttonEvent(e, selectedTask));
 
-        statusLabel = new JLabel("Name must be not empty");
-        button.addActionListener(e -> {
-            String name = taskNameTextField.getText();
-            String description = taskDescriptionField.getText();
-            // Handle the input (e.g., create task object or pass to controller)
-        });
+            taskNameTextField.setText(selectedTask.getName());
+            taskDescriptionField.setText(selectedTask.getDescription());
+            taskPriorityComboBox.setSelectedItem(selectedTask.getPriority());
+
+            button.setEnabled(true);
+        } else {
+            button = new JButton("Add");
+            button.addActionListener(e -> taskController.buttonEvent(e));
+            button.setEnabled(false);
+        }
+
+        if(editing) {
+            statusLabel = new JLabel();
+        } else {
+            statusLabel = new JLabel("Name must be not empty");
+        }
 
         layout = new GroupLayout(panel);
         panel.setLayout(layout);
@@ -132,15 +151,17 @@ public class AddTaskDialog {
     }
 
     public void updateButton() {
-        if(taskNameTextField.getText().isEmpty()) {
-            button.setEnabled(false);
-            statusLabel.setText("Name must be not empty");
-        } else if(taskController.findTask(taskNameTextField.getText()) != null) {
-            button.setEnabled(false);
-            statusLabel.setText("This name is already in use");
-        } else {
-            button.setEnabled(true);
-            statusLabel.setText("");
+        if(statusLabel != null) {
+            if(taskNameTextField.getText().isEmpty()) {
+                button.setEnabled(false);
+                statusLabel.setText("Name must be not empty");
+            } else if(taskController.findTask(taskNameTextField.getText()) != null && !editing) {
+                button.setEnabled(false);
+                statusLabel.setText("This name is already in use");
+            } else {
+                button.setEnabled(true);
+                statusLabel.setText("");
+            }
         }
     }
 

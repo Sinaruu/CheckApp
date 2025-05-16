@@ -36,12 +36,16 @@ public class TaskManager {
         taskController.updateList();
     }
 
-    public Task getTask(int index) {
-        return taskList.get(index);
-    }
-
     public ArrayList<Task> getTaskList() {
         return taskList;
+    }
+
+    public boolean isCompleted(Task task) {
+        return task.isCompleted();
+    }
+
+    public void changeCompleted(Task task) {
+        task.changeCompleted();
     }
 
     public Task findTask(String name) {

@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class TaskUI {
     private JFrame frame;
     private JList<String> taskList;
-    private JLabel taskName, taskDate, taskPriority;
+    private JLabel taskName, taskDate, taskPriority, taskStatus;
     private JTextArea messageArea;
-    private JButton addTaskButton, removeTaskButton;
+    private JButton addTaskButton, removeTaskButton, editTaskButton, markCompleteButton;
     private JPanel buttonPanel, rightPanel, headerPanel, root;
     private JScrollPane messageScroll, leftScroll;
 
@@ -63,8 +63,18 @@ public class TaskUI {
         removeTaskButton.addActionListener(e -> taskController.buttonEvent(e));
         removeTaskButton.setEnabled(false);
 
+        markCompleteButton = new JButton("Mark Complete");
+        markCompleteButton.addActionListener(e -> taskController.buttonEvent(e));
+        markCompleteButton.setEnabled(false);
+
+        editTaskButton = new JButton("Edit Task");
+        editTaskButton.addActionListener(e -> taskController.buttonEvent(e));
+        editTaskButton.setEnabled(false);
+
         buttonPanel.add(addTaskButton);
         buttonPanel.add(removeTaskButton);
+        buttonPanel.add(markCompleteButton);
+        buttonPanel.add(editTaskButton);
 
         rightPanel.add(headerPanel, BorderLayout.NORTH);
         rightPanel.add(messageScroll, BorderLayout.CENTER);
@@ -80,7 +90,6 @@ public class TaskUI {
                 String selectedTask = taskList.getSelectedValue();
                 if (selectedTask != null) {
                     taskController.taskSelectEvent(selectedTask.substring(6));
-                    removeTaskButton.setEnabled(true);
                 }
             }
         });
@@ -92,12 +101,16 @@ public class TaskUI {
         ArrayList<Task> tasks = taskController.getTasks();
         listModel = new DefaultListModel<>();
         for (Task task : tasks) {
-            switch (task.getPriority()) {
-                case LOW -> listModel.addElement("[ ! ] " + task.getName());
-                case MEDIUM -> listModel.addElement("[! !] " + task.getName());
-                case HIGH -> listModel.addElement("[!!!] " + task.getName());
-                case VERY_HIGH -> listModel.addElement("[***] " + task.getName());
-                default -> listModel.addElement("[   ] " + task.getName());
+            if(task.isCompleted()) {
+                listModel.addElement("[---] " + task.getName());
+            } else {
+                switch (task.getPriority()) {
+                    case LOW -> listModel.addElement("[ ! ] " + task.getName());
+                    case MEDIUM -> listModel.addElement("[! !] " + task.getName());
+                    case HIGH -> listModel.addElement("[!!!] " + task.getName());
+                    case VERY_HIGH -> listModel.addElement("[***] " + task.getName());
+                    default -> listModel.addElement("[   ] " + task.getName());
+                }
             }
         }
         taskList.setModel(listModel);
@@ -112,12 +125,25 @@ public class TaskUI {
 
         openedTask = task;
         taskName = new JLabel("Name: " + task.getName());
-        taskDate = new JLabel("Created on: " + TimeFormatter.formatUnixTime(task.getDate()));
+        taskDate = new JLabel("Last updated: " + TimeFormatter.formatUnixTime(task.getDate()));
         taskPriority = new JLabel("Priority: " + task.getPriority().toString());
+
+        if(task.isCompleted()) {
+            taskStatus = new JLabel("Status: Completed");
+        } else {
+            taskStatus = new JLabel("Status: Not Completed");
+        }
+
         headerPanel.add(taskName);
         headerPanel.add(taskDate);
         headerPanel.add(taskPriority);
+        headerPanel.add(taskStatus);
         messageArea.setText(task.getDescription());
+
+        markCompleteButton.setEnabled(true);
+        editTaskButton.setEnabled(true);
+        removeTaskButton.setEnabled(true);
+
         headerPanel.revalidate();
         headerPanel.repaint();
     }
@@ -126,12 +152,11 @@ public class TaskUI {
         taskName.setText("");
         taskDate.setText("");
         taskPriority.setText("");
+        taskStatus.setText("");
         messageArea.setText("");
 
+        markCompleteButton.setEnabled(false);
+        editTaskButton.setEnabled(false);
         removeTaskButton.setEnabled(false);
-    }
-
-    public void enableRemoveButton(boolean enable) {
-        removeTaskButton.setEnabled(enable);
     }
 }
