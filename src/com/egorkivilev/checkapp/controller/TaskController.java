@@ -48,8 +48,6 @@ public class TaskController {
             taskManager.removeTask(selectedTask);
             taskUI.cleanDetails();
         }
-        // TODO - Implement this method
-        // TODO - Refresh details when done
         else if(e.getActionCommand().equals("Edit Task")) {
             Task selectedTask = taskUI.getOpenedTask();
             taskDialog = new TaskDialog(this, selectedTask);
