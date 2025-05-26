@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class TimeFormatter {
+    // Formats unix time into readable format for user
     public static String formatUnixTime(long unixMillis) {
         LocalDateTime dateTime = Instant.ofEpochMilli(unixMillis)
                 .atZone(ZoneId.systemDefault())

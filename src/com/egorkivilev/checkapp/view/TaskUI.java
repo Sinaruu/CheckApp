@@ -7,6 +7,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TaskUI {
@@ -23,12 +24,21 @@ public class TaskUI {
 
     private Task openedTask;
 
-    public TaskUI(TaskController taskController) {
+    /**
+     * Constructor
+     * @param taskController
+     * @throws IOException
+     */
+    public TaskUI(TaskController taskController) throws IOException {
         this.taskController = taskController;
         init();
     }
 
-    private void init() {
+    /**
+     * Initialize the UI including events
+     * @throws IOException
+     */
+    private void init() throws IOException {
         FlatLightLaf.setup();
 
         frame = new JFrame("CheckApp");
@@ -57,18 +67,42 @@ public class TaskUI {
 
         buttonPanel = new JPanel();
         addTaskButton = new JButton("Add New Task");
-        addTaskButton.addActionListener(e -> taskController.buttonEvent(e));
+        addTaskButton.addActionListener(e -> {
+            try {
+                taskController.buttonEvent(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         removeTaskButton = new JButton("Remove Selected Task");
-        removeTaskButton.addActionListener(e -> taskController.buttonEvent(e));
+        removeTaskButton.addActionListener(e -> {
+            try {
+                taskController.buttonEvent(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         removeTaskButton.setEnabled(false);
 
         markCompleteButton = new JButton("Mark Complete");
-        markCompleteButton.addActionListener(e -> taskController.buttonEvent(e));
+        markCompleteButton.addActionListener(e -> {
+            try {
+                taskController.buttonEvent(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         markCompleteButton.setEnabled(false);
 
         editTaskButton = new JButton("Edit Task");
-        editTaskButton.addActionListener(e -> taskController.buttonEvent(e));
+        editTaskButton.addActionListener(e -> {
+            try {
+                taskController.buttonEvent(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         editTaskButton.setEnabled(false);
 
         buttonPanel.add(addTaskButton);
@@ -97,6 +131,9 @@ public class TaskUI {
         refreshTaskList();
     }
 
+    /**
+     * Refreshes the task list
+     */
     public void refreshTaskList() {
         ArrayList<Task> tasks = taskController.getTasks();
         listModel = new DefaultListModel<>();
@@ -116,10 +153,18 @@ public class TaskUI {
         taskList.setModel(listModel);
     }
 
+    /**
+     * Returns the task that is opened
+     * @return task
+     */
     public Task getOpenedTask() {
         return openedTask;
     }
 
+    /**
+     * Opens a task details
+     * @param task
+     */
     public void openTask(Task task) {
         headerPanel.removeAll();
 
@@ -150,6 +195,9 @@ public class TaskUI {
         headerPanel.repaint();
     }
 
+    /**
+     * Cleans task details (i.e. when deleted)
+     */
     public void cleanDetails() {
         taskName.setText("");
         taskDate.setText("");

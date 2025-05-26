@@ -18,6 +18,11 @@ public enum PriorityType {
         return displayName;
     }
 
+    /**
+     * Find Priority from string
+     * @param string
+     * @return
+     */
     public static PriorityType fromString(String string) {
         for (PriorityType type : PriorityType.values()) {
             if (type.toString().equals(string)) {

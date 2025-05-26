@@ -10,6 +10,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TaskDialog {
@@ -30,19 +31,34 @@ public class TaskDialog {
     private boolean editing = false;
     Task selectedTask;
 
-    public TaskDialog(TaskController taskController) {
+    /**
+     * Constructor
+     * @param taskController
+     * @throws IOException
+     */
+    public TaskDialog(TaskController taskController) throws IOException {
         this.taskController = taskController;
         init();
     }
 
-    public TaskDialog(TaskController taskController, Task task) {
+    /**
+     * More advanced constructor, made for editing task window
+     * @param taskController
+     * @param task
+     * @throws IOException
+     */
+    public TaskDialog(TaskController taskController, Task task) throws IOException {
         this.taskController = taskController;
         editing = true;
         selectedTask = task;
         init();
     }
 
-    private void init() {
+    /**
+     * Initialize the UI and open it
+     * @throws IOException
+     */
+    private void init() throws IOException {
         FlatLightLaf.setup();
 
         frame = new JFrame("Add Task");
@@ -80,7 +96,13 @@ public class TaskDialog {
 
         if(editing) {
             button = new JButton("Edit");
-            button.addActionListener(e -> taskController.buttonEvent(e, selectedTask));
+            button.addActionListener(e -> {
+                try {
+                    taskController.buttonEvent(e, selectedTask);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
 
             taskNameTextField.setText(selectedTask.getName());
             taskDescriptionField.setText(selectedTask.getDescription());
@@ -89,7 +111,13 @@ public class TaskDialog {
             button.setEnabled(true);
         } else {
             button = new JButton("Add");
-            button.addActionListener(e -> taskController.buttonEvent(e));
+            button.addActionListener(e -> {
+                try {
+                    taskController.buttonEvent(e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             button.setEnabled(false);
         }
 
@@ -150,6 +178,9 @@ public class TaskDialog {
         frame.setVisible(true);
     }
 
+    /**
+     * Update the state of add/edit button to check if the current inputs are valid
+     */
     public void updateButton() {
         if(statusLabel != null) {
             if(taskNameTextField.getText().isEmpty()) {
@@ -165,6 +196,10 @@ public class TaskDialog {
         }
     }
 
+    /**
+     * Gets data from the dialog and returns as array
+     * @return
+     */
     public ArrayList<String> getData() {
         ArrayList<String> data = new ArrayList<>();
         data.add(taskNameTextField.getText());
@@ -174,6 +209,9 @@ public class TaskDialog {
         return data;
     }
 
+    /**
+     * Well, it's probably self-explanatory...
+     */
     public void close() {
         frame.dispose();
     }
