@@ -6,9 +6,12 @@
 
 - Add new tasks with a name, description, and priority (High, Medium, Low)
 - Automatically timestamps tasks on creation
+- Option to edit the task at anytime
+- Ability to markt the task as complete
 - View task details including priority, description, and created date
 - Responsive interface built with Java Swing and FlatLaf for modern UI styling
 - MVC architecture for separation of concerns and maintainability
+- Automatically saves all tasks locally so they can be accessed later
 
 ## Technologies
 
