@@ -198,15 +198,12 @@ public class TaskController {
      * @throws IOException
      */
     public ArrayList<Task> loadTasks() throws IOException {
-        System.out.println("[DEBUG] Loading Tasks");
         ArrayList<Task> tasks = FileHandler.loadTasks();
 
         if(tasks != null) {
-            System.out.println("[DEBUG] Loaded Tasks");
             return tasks;
         }
 
-        System.out.println("[DEBUG] No Tasks Found");
         return new ArrayList<>();
     }
 
@@ -215,8 +212,6 @@ public class TaskController {
      * @throws IOException
      */
     public void saveTasks() throws IOException {
-        System.out.println("[DEBUG] Attempting to save data... ");
         FileHandler.saveTasks(taskManager.getTaskList());
-        System.out.println("[DEBUG] Tasks saved.");
     }
 }
