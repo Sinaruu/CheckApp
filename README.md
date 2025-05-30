@@ -21,7 +21,9 @@
 
 ## Getting Started
 
-Compile and run with:
+Download the latest release .jar file and run it in a discrete folder.
+
+Alternatively, compile and run with:
 
 ```bash
 javac -d bin src/com/egorkivilev/checkapp/**/*.java
